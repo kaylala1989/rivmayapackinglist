@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riviera Maya Packing List</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #f5ede0;
+    --terracotta: #c9674a;
+    --deep: #1a2e2a;
+    --ocean: #2c6e6a;
+    --gold: #d4a853;
+    --text: #2a2a2a;
+    --muted: #8a7f76;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--sand); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+
+  .hero {
+    background: var(--deep); padding: 48px 32px 40px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before { content:''; position:absolute; bottom:-60px; left:-60px; width:200px; height:200px; border-radius:50%; background:rgba(212,168,83,0.12); }
+  .hero::after  { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:rgba(44,110,106,0.15); }
+  .hero-eyebrow { font-size:11px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(32px,6vw,54px); color:var(--sand); line-height:1.1; margin-bottom:8px; }
+  .hero h1 em { color:var(--gold); font-style:italic; }
+  .hero-sub { color:rgba(245,237,224,0.55); font-size:14px; font-weight:300; margin-top:10px; }
+
+  .progress-bar { background:var(--ocean); padding:14px 32px; display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; }
+  .progress-label { color:rgba(245,237,224,0.8); font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+  .progress-count { color:var(--gold); font-family:'Playfair Display',serif; font-size:22px; font-weight:700; }
+  .progress-divider { width:1px; height:24px; background:rgba(245,237,224,0.2); }
+
+  .legend { display:flex; gap:12px; flex-wrap:wrap; padding:14px 32px; max-width:980px; margin:0 auto; font-size:12px; align-items:center; }
+  .legend-item { display:flex; align-items:center; gap:6px; color:var(--muted); }
+
+  .tabs-wrap { max-width:980px; margin:0 auto; padding:22px 32px 0; display:flex; gap:4px; flex-wrap:wrap; }
+  .tab { padding:9px 15px; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; cursor:pointer; border:1.5px solid transparent; border-bottom:none; border-radius:8px 8px 0 0; transition:all 0.2s; color:var(--muted); background:transparent; white-space:nowrap; }
+  .tab.active { background:white; color:var(--deep); border-color:#ddd; }
+
+  .container { max-width:980px; margin:0 auto; padding:0 32px 60px; }
+
+  .bag-panel { display:none; background:white; border-radius:0 12px 12px 12px; border:1.5px solid #ddd; padding:32px; margin-bottom:32px; }
+  .bag-panel.active { display:block; }
+
+  .bag-note { font-size:13px; color:var(--muted); font-style:italic; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid #f0ebe4; }
+
+  .filter-bar { display:flex; align-items:center; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .filter-label { font-size:12px; color:var(--muted); font-weight:500; }
+  .filter-btn { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; padding:5px 12px; border-radius:20px; border:1.5px solid #ddd; background:white; color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .filter-btn.active { background:var(--terracotta); border-color:var(--terracotta); color:white; }
+
+  .section { margin-bottom:28px; }
+  .section-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; padding-top:8px; }
+  .section-icon { font-size:17px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:16px; color:var(--deep); }
+
+  .items-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:5px; }
+
+  .item { display:flex; align-items:flex-start; gap:10px; padding:9px 12px; border-radius:8px; cursor:pointer; transition:background 0.15s; user-select:none; }
+  .item:hover { background:var(--sand); }
+  .item.checked { opacity:0.38; }
+  .item.checked .item-label { text-decoration:line-through; }
+  .item.hidden { display:none; }
+
+  .checkbox { width:17px; height:17px; border:2px solid #ccc; border-radius:4px; flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:all 0.15s; font-size:10px; color:white; }
+  .item.checked .checkbox { background:var(--ocean); border-color:var(--ocean); }
+
+  .item-label { font-size:14px; line-height:1.45; flex:1; }
+  .item-note { font-size:11px; color:var(--muted); }
+
+  .badge { display:inline-flex; align-items:center; font-size:10px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; border-radius:4px; padding:2px 5px; white-space:nowrap; flex-shrink:0; margin-left:4px; }
+  .badge-new   { color:var(--ocean); background:rgba(44,110,106,0.1); border:1px solid rgba(44,110,106,0.25); }
+  .badge-buy   { color:var(--terracotta); background:rgba(201,103,74,0.1); border:1px solid rgba(201,103,74,0.28); }
+  .badge-buynew{ color:#7a4010; background:rgba(212,168,83,0.18); border:1px solid rgba(212,168,83,0.45); }
+
+  .tip-box { background:linear-gradient(135deg,#f0f9f8,#e8f5f4); border-left:3px solid var(--ocean); border-radius:0 8px 8px 0; padding:13px 16px; margin-top:20px; font-size:13px; color:var(--ocean); line-height:1.6; }
+  .tip-box strong { display:block; margin-bottom:3px; font-weight:500; }
+
+  .reset-btn { background:none; border:1.5px solid var(--terracotta); color:var(--terracotta); padding:7px 16px; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all 0.2s; margin-top:20px; }
+  .reset-btn:hover { background:var(--terracotta); color:white; }
+
+  /* ── Edit mode ── */
+  .edit-toggle-wrap { display:flex; justify-content:flex-end; max-width:980px; margin:0 auto; padding:10px 32px 0; }
+  .edit-toggle-btn {
+    font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500;
+    letter-spacing:1px; text-transform:uppercase;
+    padding:7px 16px; border-radius:20px;
+    border:1.5px solid var(--ocean); color:var(--ocean); background:white;
+    cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px;
+  }
+  .edit-toggle-btn.active { background:var(--ocean); color:white; }
+
+  /* Delete button on items */
+  .item-delete {
+    display:none; width:18px; height:18px; border-radius:50%;
+    background:rgba(201,103,74,0.12); border:1px solid rgba(201,103,74,0.3);
+    color:var(--terracotta); font-size:13px; line-height:1;
+    cursor:pointer; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px; transition:all 0.15s;
+  }
+  .item-delete:hover { background:var(--terracotta); color:white; }
+  body.edit-mode .item-delete { display:flex; }
+  body.edit-mode .item { cursor:default; }
+  body.edit-mode .item:hover { background:transparent; }
+
+  /* Tag editor popover */
+  .tag-btn {
+    display:none; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:500;
+    letter-spacing:0.5px; text-transform:uppercase;
+    padding:2px 7px; border-radius:10px;
+    border:1.5px dashed #ccc; color:var(--muted); background:white;
+    cursor:pointer; transition:all 0.15s; flex-shrink:0; margin-top:1px;
+    white-space:nowrap;
+  }
+  .tag-btn:hover { border-color:var(--ocean); color:var(--ocean); }
+  body.edit-mode .tag-btn { display:inline-flex; align-items:center; gap:3px; }
+
+  .tag-popover {
+    position:fixed; z-index:999;
+    background:white; border:1.5px solid #ddd; border-radius:10px;
+    padding:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12);
+    min-width:200px; display:none;
+  }
+  .tag-popover.open { display:block; }
+  .tag-popover-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px; }
+  .tag-option {
+    display:flex; align-items:center; gap:8px;
+    padding:6px 8px; border-radius:6px; cursor:pointer;
+    font-size:13px; transition:background 0.12s;
+  }
+  .tag-option:hover { background:var(--sand); }
+  .tag-option input[type=checkbox] { accent-color:var(--ocean); width:14px; height:14px; cursor:pointer; }
+  .tag-popover-close { margin-top:10px; width:100%; font-family:'DM Sans',sans-serif; font-size:11px; padding:5px; border-radius:6px; border:1.5px solid #ddd; background:white; color:var(--muted); cursor:pointer; }
+  .tag-popover-close:hover { background:var(--sand); }
+
+  /* Add item form */
+  .add-item-form {
+    display:none; margin-top:14px; padding:14px 16px;
+    background:var(--sand); border-radius:10px;
+    gap:8px; flex-wrap:wrap; align-items:flex-end;
+  }
+  body.edit-mode .add-item-form { display:flex; }
+  .add-item-form input[type=text] {
+    flex:1; min-width:160px; font-family:'DM Sans',sans-serif; font-size:13px;
+    padding:8px 12px; border-radius:7px; border:1.5px solid #ddd;
+    background:white; color:var(--text); outline:none;
+  }
+  .add-item-form input[type=text]:focus { border-color:var(--ocean); }
+  .add-item-form input[type=text]::placeholder { color:#bbb; }
+  .add-tag-checkboxes { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .add-tag-label { display:flex; align-items:center; gap:4px; font-size:12px; color:var(--muted); cursor:pointer; }
+  .add-tag-label input { accent-color:var(--ocean); width:13px; height:13px; }
+  .add-item-btn {
+    font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500;
+    letter-spacing:0.5px; padding:8px 16px; border-radius:7px;
+    background:var(--ocean); color:white; border:none; cursor:pointer;
+    transition:all 0.15s;
+  }
+  .add-item-btn:hover { background:var(--deep); }
+
+  @media(max-width:620px){
+    .hero{padding:36px 20px 32px;} .container{padding:0 14px 40px;} .tabs-wrap{padding:16px 14px 0;} .bag-panel{padding:18px;} .items-grid{grid-template-columns:1fr;} .tab{padding:7px 10px;font-size:10px;} .legend{padding:12px 16px;} .edit-toggle-wrap{padding:8px 14px 0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">7 nights · fanny pack + carry-on + checked · endless fun</div>
+  <h1>Riviera Maya<br><em>Packing List</em></h1>
+  <div class="hero-sub">Airport night + 6 nights · Beach · Adventure · Nice Dinners</div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Packed</span>
+  <span class="progress-count" id="checked-count">0</span>
+  <div class="progress-divider"></div>
+  <span class="progress-label">Total Items</span>
+  <span class="progress-count" id="total-count">0</span>
+  <div class="progress-divider"></div>
+  <span class="progress-label">Remaining</span>
+  <span class="progress-count" id="remaining-count">0</span>
+</div>
+
+<div class="legend">
+  <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:500;">Legend:</span>
+  <div class="legend-item"><span class="badge badge-new">✦ trip add</span> Added for Riviera Maya</div>
+  <div class="legend-item"><span class="badge badge-buy">🛒 buy</span> Need to purchase (you own it)</div>
+  <div class="legend-item"><span class="badge badge-buynew">🛒 new</span> New item to buy for this trip</div>
+</div>
+
+<div class="edit-toggle-wrap">
+  <button class="edit-toggle-btn" id="editToggle" onclick="toggleEditMode()">✏️ Edit list</button>
+</div>
+
+<div class="tabs-wrap">
+  <button class="tab active" onclick="showTab('fanny',this)">👜 Fanny Pack</button>
+  <button class="tab" onclick="showTab('main-co',this)">🎒 Main Carry-On</button>
+  <button class="tab" onclick="showTab('bag1',this)">💧 Bag 1 – Face</button>
+  <button class="tab" onclick="showTab('bag2',this)">🪥 Bag 2 – Hygiene</button>
+  <button class="tab" onclick="showTab('bag3',this)">💊 Bag 3 – Meds</button>
+  <button class="tab" onclick="showTab('bag5',this)">🚿 Bag 5 – Shower</button>
+  <button class="tab" onclick="showTab('bag6',this)">💇 Bag 6 – Hair</button>
+  <button class="tab" onclick="showTab('bag7',this)">💄 Bag 7 – Makeup</button>
+  <button class="tab" onclick="showTab('bag8',this)">✨ Bag 8 – Skincare</button>
+  <button class="tab" onclick="showTab('clothes',this)">👗 Clothes</button>
+  <button class="tab" onclick="showTab('airport',this)">🛏️ Airport Night</button>
+</div>
+
+<div class="container">
+
+<!-- ===================== FANNY PACK ===================== -->
+<div class="bag-panel active" id="fanny">
+  <div class="bag-note">On your body at all times — keep this grab-able. Passport lives here, not in the checked bag.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('fanny','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('fanny','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('fanny','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Passport</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Phone</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Chapstick</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Wallet</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Sunglasses</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Headphones</span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Mexican pesos / USD cash <span class="badge badge-buynew">🛒 new</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Credit card <span class="item-note">(no foreign transaction fee)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+  </div>
+  <button class="reset-btn" onclick="resetBag('fanny')">Reset</button>
+</div>
+
+<!-- ===================== MAIN CARRY-ON ===================== -->
+<div class="bag-panel" id="main-co">
+  <div class="bag-note">Your personal item / carry-on bag — everything for the flight plus a backup outfit in case the checked bag is delayed.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('main-co','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('main-co','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('main-co','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Headphones – over ear</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">iPad</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Chargers</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Sandals</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Water bottle</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Snacks</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Adaptors</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Blue light glasses</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Neck pillow</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Stuffie 🧸</span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Portable battery / power bank <span class="badge badge-buynew">🛒 new</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">One swimsuit <span class="item-note">(bag delay backup)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">One dinner outfit <span class="item-note">(bag delay backup)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Underwear × 2 <span class="item-note">(backup)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">E-tickets + hotel confirmation <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Travel insurance info <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Waterproof phone pouch <span class="badge badge-buynew">🛒 new</span></span></div>
+  </div>
+  <div class="tip-box"><strong>💡 Bag delay tip</strong>Carry one swimsuit and one dinner outfit in this bag. If your checked bag is delayed even one night, you'll still be able to make it to the beach and dinner without panic.</div>
+  <button class="reset-btn" onclick="resetBag('main-co')">Reset</button>
+</div>
+
+<!-- ===================== BAG 1 – FACE ===================== -->
+<div class="bag-panel" id="bag1">
+  <div class="bag-note">Carry-on liquids · In-flight face hydration — your skin will thank you after a few hours of recycled airplane air.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag1','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag1','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag1','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Face spray</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Emollient face cream</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hydrating eye drops</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Chapstick</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Lozenges</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hydrating nasal spray</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Tissues</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hand lotion</span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Lip balm with SPF <span class="badge badge-buynew">🛒 new</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Mini perfume <span class="badge badge-new">✦ trip add</span></span></div>
+  </div>
+  <button class="reset-btn" onclick="resetBag('bag1')">Reset</button>
+</div>
+
+<!-- ===================== BAG 2 – HYGIENE ===================== -->
+<div class="bag-panel" id="bag2">
+  <div class="bag-note">Carry-on · Daily hygiene essentials.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag2','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag2','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag2','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Q-tips</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hair brush</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Nail picker</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Flossers</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Deodorant</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Toothbrush</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Toothpaste</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Stain remover</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Face wipes</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hand sanitizer</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hand wipes</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Eye mask</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Ear plugs</span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Tweezers + nail file + clippers <span class="badge badge-new">✦ trip add</span></span></div>
+  </div>
+  <button class="reset-btn" onclick="resetBag('bag2')">Reset</button>
+</div>
+
+<!-- ===================== BAG 3 – MEDS ===================== -->
+<div class="bag-panel" id="bag3">
+  <div class="bag-note">Carry-on · Never checked. Always on the plane with you.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag3','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag3','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag3','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Medicine pack</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Tampons</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Gas-X</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Tums</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Alka-Seltzer</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Blister band-aids</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Pepto</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Liquid IV</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Prescriptions (RXs)</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Dramamine</span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Imodium <span class="item-note">(different mechanism than Pepto — both worth having)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Ibuprofen / Tylenol <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Antihistamines <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Extra electrolyte packets <span class="item-note">(heat + humidity — bring more than usual)</span> <span class="badge badge-buynew">🛒 new</span></span></div>
+  </div>
+  <div class="tip-box"><strong>🌴 Mexico tip</strong>Bring more stomach meds than you think you need. Traveler's stomach is common even at nice resorts. Imodium and Pepto work differently — both are worth having on hand.</div>
+  <button class="reset-btn" onclick="resetBag('bag3')">Reset</button>
+</div>
+
+<!-- ===================== BAG 5 – SHOWER ===================== -->
+<div class="bag-panel" id="bag5">
+  <div class="bag-note">Checked if possible · Full size since it's not going carry-on.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag5','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag5','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag5','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Shampoo</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Conditioner</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Razor</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Shaving cream</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Soap / body wash</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hair net</span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Dry shampoo <span class="badge badge-new">✦ trip add</span></span></div>
+  </div>
+  <button class="reset-btn" onclick="resetBag('bag5')">Reset</button>
+</div>
+
+<!-- ===================== BAG 6 – HAIR ===================== -->
+<div class="bag-panel" id="bag6">
+  <div class="bag-note">Checked if possible · Hair styling products and tools.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag6','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag6','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag6','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Detangler</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Smoothing cream</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Oil</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Bobby pins</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Elastics</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Hair clip</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Iron / straightener</span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Curler <span class="item-note">(for nice dinners)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Anti-humidity spray / frizz serum <span class="item-note">(humidity is starting to rise in April)</span> <span class="badge badge-buynew">🛒 new</span></span></div>
+  </div>
+  <div class="tip-box"><strong>💡 Humidity heads-up</strong>April in Riviera Maya is warm and the humidity is climbing. Whatever you use to fight frizz at home, bring double. This is not the place to underpack hair products.</div>
+  <button class="reset-btn" onclick="resetBag('bag6')">Reset</button>
+</div>
+
+<!-- ===================== BAG 7 – MAKEUP ===================== -->
+<div class="bag-panel" id="bag7">
+  <div class="bag-note">Checked if possible · Full makeup kit.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag7','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag7','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag7','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Eyeliner × 2</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Eyebrow × 2</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Mascara</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Foundation</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Bronzer / blush</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Eye shadow</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Lipstick</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Sponge</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Blush brush</span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Waterproof mascara <span class="item-note">(cenotes + beach)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Setting spray / primer <span class="item-note">(heat + humidity)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">Statement jewelry / earrings <span class="badge badge-new">✦ trip add</span></span></div>
+  </div>
+  <div class="tip-box"><strong>💡 Makeup tip</strong>A good setting spray is essential in the heat and humidity. Waterproof everything you can — even a quick cenote splash will undo regular mascara instantly.</div>
+  <button class="reset-btn" onclick="resetBag('bag7')">Reset</button>
+</div>
+
+<!-- ===================== BAG 8 – SKINCARE ===================== -->
+<div class="bag-panel" id="bag8">
+  <div class="bag-note">Checked · Full skincare routine.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('bag8','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('bag8','new',this)">✦ Trip additions</button>
+    <button class="filter-btn" onclick="applyFilter('bag8','buy',this)">🛒 Need to buy</button>
+  </div>
+  <div class="items-grid">
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Face wipes</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Moisturizer</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Sunscreen</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Cleanser</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Retinol</span></div>
+    <div class="item"><div class="checkbox">✓</div><span class="item-label">Perfume</span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">Reef-safe mineral sunscreen × 3+ <span class="item-note">(required at many cenotes)</span> <span class="badge badge-buynew">🛒 new</span></span></div>
+    <div class="item is-new is-buy"><div class="checkbox">✓</div><span class="item-label">After-sun / aloe gel <span class="badge badge-buynew">🛒 new</span></span></div>
+    <div class="item is-new"><div class="checkbox">✓</div><span class="item-label">SPF face moisturizer <span class="item-note">(daily wear — 11hrs of sun/day)</span> <span class="badge badge-new">✦ trip add</span></span></div>
+  </div>
+  <div class="tip-box"><strong>🌿 Reef-safe note</strong>Many cenotes require mineral sunscreen specifically — they'll make you shower before entering otherwise. Bring separate reef-safe bottles alongside your regular sunscreen. Bring at least 3 bottles total for 6 days.</div>
+  <button class="reset-btn" onclick="resetBag('bag8')">Reset</button>
+</div>
+
+<!-- ===================== CLOTHES ===================== -->
+<div class="bag-panel" id="clothes">
+  <div class="bag-note">Checked bag · All clothing — organized by occasion. Everything here is a trip addition since your standard list doesn't include clothes.</div>
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" onclick="applyFilter('clothes','all',this)">All</button>
+    <button class="filter-btn" onclick="applyFilter('clothes','buy',this)">🛒 Need to buy</button>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-icon">👙</span><span class="section-title">Swimwear & Beach</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Swimsuits × 3</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Bikini top extras × 2</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Cover-up / sarong × 2</span></div>
+      <div class="item is-buy"><div class="checkbox">✓</div><span class="item-label">Rash guard <span class="item-note">(cenotes / snorkeling)</span> <span class="badge badge-buy">🛒 buy</span></span></div>
+      <div class="item is-buy"><div class="checkbox">✓</div><span class="item-label">Water shoes <span class="item-note">(lava rock at cenotes)</span> <span class="badge badge-buy">🛒 buy</span></span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Beach bag / tote</span></div>
+      <div class="item is-buy"><div class="checkbox">✓</div><span class="item-label">Waterproof sandals / flip flops <span class="badge badge-buy">🛒 buy</span></span></div>
+      <div class="item is-buy"><div class="checkbox">✓</div><span class="item-label">Small dry bag <span class="item-note">(for cenote excursions)</span> <span class="badge badge-buy">🛒 buy</span></span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Wide-brim sun hat</span></div>
+      <div class="item is-buy"><div class="checkbox">✓</div><span class="item-label">Insect repellent <span class="item-note">(DEET or picaridin — for excursions)</span> <span class="badge badge-buy">🛒 buy</span></span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-icon">🌺</span><span class="section-title">Casual Daywear</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Breezy sundresses × 3</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Linen / cotton shorts × 2</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Casual tops / tees × 4</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Light cardigan / linen shirt <span class="item-note">(AC is aggressive)</span></span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Comfortable walking sandals</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Sneakers <span class="item-note">(excursion days)</span></span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Sunglasses × 2 pairs</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-icon">✨</span><span class="section-title">Nice Dinner & Evening</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Dressy dresses / jumpsuits × 3</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Heeled sandals or wedges</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Going-out tops × 2</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Nice trousers or skirt</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Small evening clutch / crossbody</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Light wrap / pashmina <span class="item-note">(restaurants are cold)</span></span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-icon">🥾</span><span class="section-title">Adventure Wear</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Athletic leggings or shorts</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Moisture-wicking tops × 2</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><span class="section-icon">🩲</span><span class="section-title">Undergarments & Sleepwear</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Underwear × 10</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Bras × 3–4</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Strapless / stick-on bra</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Lightweight pajamas × 2</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Socks × 3 pairs <span class="item-note">(sneaker days)</span></span></div>
+    </div>
+  </div>
+  <button class="reset-btn" onclick="resetBag('clothes')">Reset</button>
+</div>
+
+<!-- ===================== AIRPORT NIGHT ===================== -->
+<div class="bag-panel" id="airport">
+  <div class="bag-note">The night before you fly — your checked bag is already sealed and ready. Just pull these out for one comfortable overnight.</div>
+  <div class="section">
+    <div class="section-header"><span class="section-icon">🛏️</span><span class="section-title">Keep Out for the Night</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Pajamas / sleep set</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Outfit for travel day</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Bag 1 <span class="item-note">(face hydration)</span></span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Bag 2 <span class="item-note">(toothbrush, deodorant)</span></span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Phone + charger</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Eye mask + ear plugs</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Snacks for morning</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Stuffie 🧸</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Alarm set + backup alarm 🔔</span></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><span class="section-icon">✅</span><span class="section-title">Morning Checklist</span></div>
+    <div class="items-grid">
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Passport in fanny pack</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Phone fully charged</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Check safe + all drawers</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Liquid bags in carry-on, not checked</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Checked bag to lobby / bag drop</span></div>
+      <div class="item"><div class="checkbox">✓</div><span class="item-label">Confirm terminal + departure time</span></div>
+    </div>
+  </div>
+  <div class="tip-box"><strong>🌴 Almost there!</strong>Pack your checked bag the night before the airport hotel — not the morning of. Have the most amazing trip!</div>
+  <button class="reset-btn" onclick="resetBag('airport')">Reset</button>
+</div>
+
+</div><!-- /container -->
+
+<!-- ── Tag editor modal ── -->
+<div id="tagModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+  <div style="background:white; border-radius:14px; padding:24px; width:280px; box-shadow:0 12px 40px rgba(0,0,0,0.2);">
+    <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:14px;">Edit tags</div>
+    <label style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; cursor:pointer; margin-bottom:6px; font-size:13px;">
+      <input type="checkbox" id="tm-new" style="width:15px;height:15px;accent-color:var(--ocean);cursor:pointer;">
+      <span class="badge badge-new">✦ trip add</span> Added for Riviera Maya
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; cursor:pointer; margin-bottom:6px; font-size:13px;">
+      <input type="checkbox" id="tm-buy" style="width:15px;height:15px;accent-color:var(--ocean);cursor:pointer;">
+      <span class="badge badge-buy">🛒 buy</span> Need to purchase
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; cursor:pointer; margin-bottom:16px; font-size:13px;">
+      <input type="checkbox" id="tm-buynew" style="width:15px;height:15px;accent-color:var(--ocean);cursor:pointer;">
+      <span class="badge badge-buynew">🛒 new</span> New item to buy
+    </label>
+    <button onclick="closeTagModal()" style="width:100%; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; padding:9px; border-radius:8px; border:none; background:var(--ocean); color:white; cursor:pointer;">Done</button>
+  </div>
+</div>
+
+<script>
+  let editMode = false;
+  let activeTagItem = null;
+
+  // Strip any lingering inline onclick from items (belt + suspenders)
+  document.querySelectorAll('.item[onclick]').forEach(el => el.removeAttribute('onclick'));
+
+  // Instrument all existing items on load
+  document.querySelectorAll('.item').forEach(instrumentItem);
+  updateCounts();
+
+  // Build add-item forms for every bag panel
+  document.querySelectorAll('.bag-panel').forEach(panel => {
+    const form = document.createElement('div');
+    form.className = 'add-item-form';
+    form.innerHTML = `
+      <input type="text" placeholder="Add item…" class="add-item-input">
+      <div class="add-tag-checkboxes">
+        <label class="add-tag-label"><input type="checkbox" class="ck-new"> <span class="badge badge-new">✦ trip</span></label>
+        <label class="add-tag-label"><input type="checkbox" class="ck-buy"> <span class="badge badge-buy">🛒 buy</span></label>
+        <label class="add-tag-label"><input type="checkbox" class="ck-buynew"> <span class="badge badge-buynew">🛒 new</span></label>
+      </div>
+      <button class="add-item-btn">+ Add</button>
+    `;
+    const resetBtn = panel.querySelector('.reset-btn');
+    resetBtn ? panel.insertBefore(form, resetBtn) : panel.appendChild(form);
+
+    const input  = form.querySelector('.add-item-input');
+    const addBtn = form.querySelector('.add-item-btn');
+    const doAdd  = () => {
+      const text = input.value.trim();
+      if (!text) return;
+      const isNew    = form.querySelector('.ck-new').checked;
+      const isBuy    = form.querySelector('.ck-buy').checked;
+      const isBuynew = form.querySelector('.ck-buynew').checked;
+      const item = document.createElement('div');
+      item.className = 'item' + (isNew||isBuynew ? ' is-new':'') + (isBuy||isBuynew ? ' is-buy':'') + (isBuynew ? ' is-buynew':'');
+      let badge = isBuynew ? '<span class="badge badge-buynew">🛒 new</span>'
+                : isBuy    ? '<span class="badge badge-buy">🛒 buy</span>'
+                : isNew    ? '<span class="badge badge-new">✦ trip add</span>' : '';
+      item.innerHTML = `<div class="checkbox">✓</div><span class="item-label">${text} ${badge}</span>`;
+      const grids = panel.querySelectorAll('.items-grid');
+      grids[grids.length - 1].appendChild(item);
+      instrumentItem(item);
+      input.value = '';
+      form.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+      updateCounts();
+    };
+    addBtn.addEventListener('click', doAdd);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') doAdd(); });
+  });
+
+  function instrumentItem(item) {
+    if (item.dataset.wired) return;
+    item.dataset.wired = '1';
+    item.removeAttribute('onclick');
+
+    // × delete button
+    const del = document.createElement('button');
+    del.className = 'item-delete';
+    del.textContent = '×';
+    del.addEventListener('click', e => { e.stopPropagation(); item.remove(); updateCounts(); });
+    item.appendChild(del);
+
+    // 🏷 tags button
+    const tb = document.createElement('button');
+    tb.className = 'tag-btn';
+    tb.textContent = '🏷 tags';
+    tb.addEventListener('click', e => { e.stopPropagation(); openTagModal(item); });
+    item.appendChild(tb);
+
+    // checkbox toggle (only outside edit mode)
+    item.addEventListener('click', () => { if (!editMode) toggle(item); });
+  }
+
+  // ── Tag modal ──
+  function openTagModal(item) {
+    activeTagItem = item;
+    document.getElementById('tm-new').checked    = item.classList.contains('is-new');
+    document.getElementById('tm-buy').checked    = item.classList.contains('is-buy') && !item.classList.contains('is-buynew');
+    document.getElementById('tm-buynew').checked = item.classList.contains('is-buynew');
+    const modal = document.getElementById('tagModal');
+    modal.style.display = 'flex';
+  }
+
+  function closeTagModal() {
+    if (!activeTagItem) { document.getElementById('tagModal').style.display='none'; return; }
+    const item     = activeTagItem;
+    const isNew    = document.getElementById('tm-new').checked;
+    const isBuy    = document.getElementById('tm-buy').checked;
+    const isBuynew = document.getElementById('tm-buynew').checked;
+
+    item.classList.toggle('is-new',    isNew || isBuynew);
+    item.classList.toggle('is-buy',    isBuy || isBuynew);
+    item.classList.toggle('is-buynew', isBuynew);
+
+    const label = item.querySelector('.item-label');
+    label.querySelectorAll('.badge').forEach(b => b.remove());
+    if (isBuynew)        label.insertAdjacentHTML('beforeend','<span class="badge badge-buynew">🛒 new</span>');
+    else if (isBuy)      label.insertAdjacentHTML('beforeend','<span class="badge badge-buy">🛒 buy</span>');
+    else if (isNew)      label.insertAdjacentHTML('beforeend','<span class="badge badge-new">✦ trip add</span>');
+
+    document.getElementById('tagModal').style.display = 'none';
+    activeTagItem = null;
+  }
+
+  // Close modal if clicking the dark backdrop
+  document.getElementById('tagModal').addEventListener('click', function(e) {
+    if (e.target === this) closeTagModal();
+  });
+
+  // ── Edit mode ──
+  function toggleEditMode() {
+    editMode = !editMode;
+    document.body.classList.toggle('edit-mode', editMode);
+    const btn = document.getElementById('editToggle');
+    btn.classList.toggle('active', editMode);
+    btn.textContent = editMode ? '✅ Done editing' : '✏️ Edit list';
+  }
+
+  // ── Core ──
+  function toggle(el) { el.classList.toggle('checked'); updateCounts(); }
+
+  function updateCounts() {
+    const all     = document.querySelectorAll('.item');
+    const checked = document.querySelectorAll('.item.checked');
+    document.getElementById('total-count').textContent     = all.length;
+    document.getElementById('checked-count').textContent   = checked.length;
+    document.getElementById('remaining-count').textContent = all.length - checked.length;
+  }
+
+  function showTab(id, btn) {
+    document.querySelectorAll('.bag-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function applyFilter(panelId, mode, btn) {
+    const panel = document.getElementById(panelId);
+    panel.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    panel.querySelectorAll('.item').forEach(item => {
+      if      (mode === 'all') item.classList.remove('hidden');
+      else if (mode === 'new') item.classList.toggle('hidden', !item.classList.contains('is-new'));
+      else if (mode === 'buy') item.classList.toggle('hidden', !item.classList.contains('is-buy'));
+    });
+  }
+
+  function resetBag(id) {
+    document.querySelectorAll(`#${id} .item`).forEach(i => i.classList.remove('checked'));
+    updateCounts();
+  }
+</script>
+</body>
+</html>
+</body>
+</html>
